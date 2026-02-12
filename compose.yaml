@@ -1,0 +1,20 @@
+services:
+  web:
+    build: . # Tells Docker to build an image from the current directory's Dockerfile
+    ports:
+      - "8000:5000" # Maps port 8000 on the host to port 5000 in the container
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/exampledb
+    depends_on:
+      - db
+  db:
+    image: "postgres:alpine" # Uses an existing image from Docker Hub
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: exampledb
+    volumes:
+      - db-data:/var/lib/postgresql/data # Persists database data
+
+volumes:
+  db-data: # Defines the volume for persistent data
